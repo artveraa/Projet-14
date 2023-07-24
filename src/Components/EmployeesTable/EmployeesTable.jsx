@@ -2,72 +2,73 @@ import React from 'react';
 import DataTable from 'react-data-table-component';
 import FilterComponent from "react-data-table-component";
 import {useSelector} from "react-redux";
-import {useState} from "react";
+import {useState, useMemo} from "react";
 import {mockedEmployees} from "../../data/mockedEmployees";
 
 const columns = [
     {
         name: 'First Name',
         selector: row => row.firstName,
+        sortable: true,
     },
     {
         name: 'Last Name',
         selector: row => row.lastName,
+        sortable: true,
     },
     {
         name: 'Start Date',
         selector: row => row.startDate,
+        sortable: true,
     },
     {
         name: 'Department',
         selector: row => row.department,
+        sortable: true,
     },
     {
         name: 'Date of Birth',
         selector: row => row.dateOfBirth,
+        sortable: true,
     },
     {
         name: 'Street',
         selector: row => row.street,
+        sortable: true,
     },
     {
         name: 'City',
         selector: row => row.city,
+        sortable: true,
     },
     {
         name: 'State',
         selector: row => row.state,
+        sortable: true,
     },
     {
         name: 'Zip Code',
         selector: row => row.zip,
+        sortable: true,
     }
 ];
 
 function EmployeesTable() {
     const employees = useSelector(state => state.employees);
-    employees.forEach(employee => {
-        console.log(employee.firstName);
+    const [search, setSearch] = useState('');
+    console.log(search);
+
+    const filteredEmployees = useMemo(() => {
+        return employees.filter(employee => {
+            return employee.lastName.toLowerCase().includes(search.toLowerCase()) || employee.firstName.toLowerCase().includes(search.toLowerCase());
+        })
     });
 
-    const [filterText, setFilterText] = employees;
-    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-    // const filteredItems = employees.filter(
-    //     item => item.firstName && item.firstName.toLowerCase().includes(filterText.toLowerCase()),
-    // );
-
-    const subHeaderComponentMemo = React.useMemo(() => {
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
-
+    const orderFilter = useMemo(() => {
         return (
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+            <FilterComponent onFilter={e => console.log(e)} filterText={filteredEmployees}/>
         );
-    }, [filterText, resetPaginationToggle]);
+    })
 
     return (
         <>
@@ -78,20 +79,18 @@ function EmployeesTable() {
                     name='search'
                     type="text"
                     placeholder="Rechercher un employé"
-                    // value={filterText}
-                    // onChange={e => setFilterText(e.target.value.toLowerCase())}
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+
                 />
             </div>
             <DataTable
                 title="Contact List"
                 columns={columns}
-                data={mockedEmployees}
+                data={filteredEmployees}
                 pagination
-                paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                 subHeader
-                subHeaderComponent={subHeaderComponentMemo}
-                selectableRows
-                persistTableHead
+                subHeaderComponent={orderFilter}
             />
         </>
     );
