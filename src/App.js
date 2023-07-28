@@ -36,7 +36,25 @@ function App() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState('');
 
-    console.log(new Date());
+    const clearForm = () => {
+        const inputs = document.querySelectorAll('input');
+
+        inputs.forEach(input => {
+            input.value = '';
+        });
+
+        setUser({
+            firstName: '',
+            lastName: '',
+            dateOfBirth: new Date(),
+            startDate: new Date(),
+            street: '',
+            city: '',
+            state: '',
+            zip: '',
+            department: '',
+        });
+    }
 
     const validateForm = (e) => {
         e.preventDefault();
@@ -79,6 +97,7 @@ function App() {
             })
             setModalContent('Employee successfully created!')
             setShowModal(true);
+            clearForm();
         }
     };
 
