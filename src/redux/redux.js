@@ -2,19 +2,7 @@ import {configureStore, createSlice} from "@reduxjs/toolkit";
 
 const employeesSlice = createSlice({
     name: "employees",
-    initialState: [
-        // {
-        //     firstName: undefined,
-        //     lastName: undefined,
-        //     dateOfBirth: undefined,
-        //     startDate: undefined,
-        //     street: undefined,
-        //     city: undefined,
-        //     state: undefined,
-        //     zip: undefined,
-        //     department: undefined,
-        // }
-    ],
+    initialState: [],
     reducers: {
         addEmployee: (state, action) => {
             const newEmployee = {

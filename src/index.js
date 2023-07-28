@@ -15,6 +15,7 @@ root.render(
               <Routes>
                   <Route path="/" element={<App/>}/>
                   <Route path="/employees" element={<Employees/>}/>
+                    <Route path="*" element={<h1>Not Found</h1>}/>
               </Routes>
           </Router>
       </Provider>
